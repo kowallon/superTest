@@ -1,0 +1,135 @@
+Dane:
+BaseUrl: 'https://api.stlouisfed.org/fred/releases?api_key='
+apiKey: '9d8a5db9e0af1309639fae7f166e4acd'
+
+TC.01 Dane zwracane domyślnie w formacie XML
+1. Wyślij GET request do BaseUrl podając apiKey
+Rezultat:
+Odpowiedź jest w formacie XML i ma status 200
+
+TC.02 Dane zwracane w formacie JSON
+1. Przygotuj GET request do BaseUrl podając apiKey
+2. Dodaj parametr file_type=json
+3. Wyślij request
+Rezultat:
+Odpowiedź ma status 200 i body jest w formacie json
+
+TC.03 Domyślna data początkowa jest równa dziś
+1. Wyślij GET request do BaseUrl podając apiKey i parametr file_type=json
+Rezultat:
+Odpowiedź ma status 200
+realtime_start w odpowiedzi jest równe dzisiejszej dacie
+
+TC.04 Domyślna data końcowa jest równa dziś
+1. Wyślij GET request do BaseUrl podając apiKey i parametr file_type=json
+Rezultat:
+Odpowiedź ma status 200
+realtime_end w odpowiedzi jest równe dzisiejszej dacie
+
+TC.05 Limit zwróconych wyników jest ograniczony do 1000
+1. Wyślij GET request do BaseUrl podając apiKey i parametr file_type=json
+Rezultat:
+Odpowiedź ma status 200
+W odpowiedzi jest właściwość limit = 1000
+W odpowiedzi właściwość count jest liczbą w przedziale od 1 do 1000
+
+TC.06 Offset pomija wyniki od początku
+1. Wyślij GET request do BaseUrl podając apiKey i parametr file_type=json
+2. Zapisz id trzech pierwszych zwróconych obiektów z tablicy releases
+3. Wyślij GET request do BaseUrl podając apiKey i parametr file_type=json i parametr offset = 2
+Rezultat:
+Odpowiedź ma status 200
+W odpowiedzi właściwość offset ma wartość = 2
+W tablicy releases nie ma dwóch pierwszych obiektów zapisanych po pierwszym GET requescie
+
+
+TC.07 Wyniki są domyślnie posortowane rosnąco wg. id
+1. Wyślij GET request do BaseUrl podając apiKey i parametr file_type=json
+Rezultat:
+Odpowiedź ma status 200
+Wyniki w tablicy releases są posortowane rosnąco po id
+
+TC.08 Wyniki są posortowane po nazwie malejąco
+1. Wyślij GET request do BaseUrl podając apiKey i parametry: file_type=json, order_by=name, sort_order=desc
+Rezultat:
+Odpowiedź ma status 200
+Wyniki w tablicy releases są posortowane malejąco po nazwie
+
+TC.09 Każdy release zawiera odpowiednie dane
+1. Wyślij GET request do BaseUrl podając apiKey i parametry: file_type=json
+Rezultat:
+Odpowiedź ma status 200
+Każdy z wyników release zawiera: id,realtime_end, realtime_start, name i boolean: press_release
+
+TC.10 Podanie parametru realtime_start zwróci prawidłowe wyniki od podanej daty
+1. Wyślij GET request do BaseUrl podając apiKey i parametry: file_type=json, realtime_start = przeszła data w formacie YYYY-MM-DD
+Rezultat:
+Odpowiedź ma status 200
+W odpowiedzi realtime_start jest równy podanej dacie
+W odpowiedzi realtime_end jest równy dacie 9999-12-31
+źródło: https://fred.stlouisfed.org/docs/api/fred/realtime_period.html
+
+
+TC.11 Podanie parametru realtime_end zwróci prawidłowe wyniki do podanej daty
+1. Wyślij GET request do BaseUrl podając apiKey i parametry: file_type=json, realtime_end = przeszla data w formacie YYYY-MM-DD
+Rezultat:
+Odpowiedź ma status 200
+W odpowiedzi realtime_end jest równy podanej dacie
+W odpowiedzi realtime_end jest równy dacie 1776-07-04
+
+źródło: https://fred.stlouisfed.org/docs/api/fred/realtime_period.html
+
+TC.12 Wyniki tylko z danego przedziału czasowego są zwrócone prawidłowo
+1. Wyślij GET request do BaseUrl podając apiKey i parametry: file_type=json, realtime_end = 1989-12-31, realtime_start = 1980-01-01
+Rezultat:
+Odpowiedź ma status 200
+Każdy z release w odpowiedzi ma realtime_start >= 1980-01-01
+Każdy z release w odpowiedzi ma realtime_end <= 1989-12-31
+
+TC.13 Przy nieprawidłowym kluczu wyniki nie zostaną zwrócone
+1. Wyślij GET request podając klucz API = 9d8a5db9e0af1309639fae7f166e4acd
+Rezultat:
+Status odpowiedzi 400
+Error message w odpowiedzi zawiera 'The value for variable api_key is not registered.'
+
+TC.14 Podanie formatu innego niż JSON/XML nie zwróci wyników
+1. Wyślij GET request z parametrem file_type=html
+Rezultat:
+Status odpowiedzi 400
+
+TC.15 Podanie realtime_start jako datę przyszłą nie zwróci wyników
+1. Wyślij GET request z realtime_start jako przyszłą datą
+Rezultat:
+Status odpowiedzi 400
+Error message zawiera 'Variable realtime_start can not be after today's date'
+
+
+TC.16 Offset ustawiony jako liczba ujemna
+1. Wyślij GET request z offset jako liczbę ujemną np. -1
+Rezultat:
+Status odpowiedzi 400
+
+
+TC.17 Podanie realtime_start jako datę wcześniejszą niż 1776-07-04 nie zwróci wyników
+1. Wyślij GET request z realtime_start z datą 1700-01-01
+Rezultat:
+Status odpowiedzi 400
+
+TC.18 Podanie realtime_start w nieprawidłowym formacie nie zwróci wyników
+1. Wyślij GET request z realtime_start 01-01-2023
+Rezultat:
+Status odpowiedzi 400
+
+TC.19 Podanie limit powyżej 1000 nie zwróci wyników
+1. Wyślij GET request z parametrem limit = 1001
+Rezultat:
+Status odpowiedzi 400
+Error message zawiera Variable limit is not between 1 and 1000."
+
+TC.20 Podanie offset = 1000 zwróci pustą tablice releases
+1. Wyślij GET request z parametrem offset = 1000
+Rezultat:
+Status odpowiedzi 200
+Releases jest pustą tablicą
+
+
