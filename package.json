@@ -1,5 +1,5 @@
 {
-  "name": "mocha-chai-unit-testing",
+  "name": "zadanie",
   "version": "1.0.0",
   "description": "",
   "main": "index.ts",
@@ -19,12 +19,13 @@
     "chai-json": "^1.0.0",
     "chai-sorted": "^0.2.0",
     "chai-xml": "^0.4.1",
+    "cypress": "^13.7.1",
     "mocha": "^10.2.0",
     "nyc": "^15.1.0",
     "sinon": "^16.0.0",
     "supertest": "^6.3.4",
     "ts-node": "^10.9.1",
-    "typescript": "^5.1.6"
+    "typescript": "^5.4.3"
   },
   "dependencies": {
     "@types/chai-datetime": "0.0.39",
