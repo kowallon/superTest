@@ -1,10 +1,17 @@
 [
   {
-    "name": "passes",
-    "email": "hello@cypress.io",
-    "body": "Fixtures are a great way to mock data for responses to routes"
+    "name": "Buttons in headers contain correct text",
+    "researchText": "Economic Research Resources",
+    "productsText": " Switch Products",
+    "accountText": "My Account"
   },
   {
-    "name": "nazwa"
+    "name": "All producs are displayed",
+    "productNames": ["FRED", "AL", "FRASER", "ECONLOWDOWN"]
+  },
+  {
+    "name": "Registration form requires correct email",
+    "email": "mateusz@com",
+    "password": "SomeCorrectPassword123!"
   }
 ]
